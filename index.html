@@ -158,6 +158,14 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line);
       </section>
 
       <section>
+        <h2>Documento fiscale</h2>
+        <div class="toggle" role="group" aria-label="Documento fiscale">
+          <button id="doc-occ" aria-pressed="true">Prestazione occasionale<span>fuori campo IVA · ritenuta 20%</span></button>
+          <button id="doc-fat" aria-pressed="false">Fattura<span id="lbl-fat"></span></button>
+        </div>
+      </section>
+
+      <section>
         <h2>Voci incluse</h2>
         <div class="list" id="list-core"></div>
       </section>
@@ -216,8 +224,14 @@ const CONFIG = {
     { id: "luci", gruppo: "extra", titolo: "Light design e operatore luci", desc: "Programmazione delle luci sul setup del locale e operatore durante la serata.", tipo: "serata", prezzo: 200 },
     { id: "refresh", gruppo: "extra", soloPacchetto: true, titolo: "Nuovi contenuti per ogni data", desc: "Visual aggiornati per ogni serata del pacchetto, così ogni data ha un look diverso.", tipo: "serata", prezzo: 120 }
   ],
+  // I prezzi delle voci sono il NETTO che deve restare a Pixels Smoothies: tasse e costi si aggiungono sopra.
+  fiscale: {
+    ritenuta: 0.20,              // prestazione occasionale: lordo = netto / (1 - 0,20)
+    iva: 0.22,                   // fattura: IVA sopra l'imponibile
+    associazione: "Associazione Carillon",
+    quotaAssociazione: 0.20      // parte dell'imponibile che l'associazione trattiene per tasse/gestione/pagarti (DA CONFERMARE con Carillon)
+  },
   note: [
-    "Importi espressi come compenso lordo. Il documento fiscale (ricevuta o fattura) viene emesso a conferma.",
     "Il locale fornisce corrente sui punti di proiezione, accesso per il montaggio dal pomeriggio e un punto regia con vista sulle facciate.",
     "Nel pacchetto le date vanno fissate in anticipo; lo sconto si applica alle voci che si ripetono ogni serata.",
     "Conferma richiesta entro la data di validità per garantire la disponibilità dell'attrezzatura."
@@ -229,7 +243,7 @@ const $ = (s) => document.querySelector(s);
 const eur = (n) => n.toLocaleString("it-IT", { style: "currency", currency: "EUR", minimumFractionDigits: 0, maximumFractionDigits: 2 });
 const fmtDate = (d) => d.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
 
-const state = { pack: false, on: {} };
+const state = { pack: false, doc: "occ", on: {} };
 CONFIG.voci.forEach(v => state.on[v.id] = v.gruppo === "core");
 
 function init() {
@@ -243,9 +257,12 @@ function init() {
   $("#h-intro").textContent = CONFIG.intro;
   $("#lbl-single").textContent = CONFIG.dataEvento;
   $("#lbl-pack").textContent = `${CONFIG.serate} serate · −${Math.round(CONFIG.scontoPacchetto * 100)}%`;
-  $("#notes").innerHTML = "<h2>Condizioni</h2>" + CONFIG.note.map(n => `<p>${n}</p>`).join("");
+  $("#notes").innerHTML = "<h2>Condizioni</h2><p id=\"fisc-note\"></p>" + CONFIG.note.map(n => `<p>${n}</p>`).join("");
   $("#mode-single").onclick = () => setMode(false);
   $("#mode-pack").onclick = () => setMode(true);
+  $("#doc-occ").onclick = () => setDoc("occ");
+  $("#doc-fat").onclick = () => setDoc("fat");
+  $("#lbl-fat").textContent = `${CONFIG.fiscale.associazione} · IVA ${Math.round(CONFIG.fiscale.iva * 100)}% inclusa nel totale`;
   $("#copy").onclick = copy;
   render();
 }
@@ -257,11 +274,26 @@ function setMode(p) {
   render();
 }
 
+function setDoc(d) {
+  state.doc = d;
+  $("#doc-occ").setAttribute("aria-pressed", String(d === "occ"));
+  $("#doc-fat").setAttribute("aria-pressed", String(d === "fat"));
+  render();
+}
+
+// fattore che trasforma il netto desiderato nel prezzo esposto (lordo o imponibile)
+function factor() {
+  const f = CONFIG.fiscale;
+  return state.doc === "occ" ? 1 / (1 - f.ritenuta) : 1 / (1 - f.quotaAssociazione);
+}
+const r2 = (n) => Math.round(n * 100) / 100;
+
 function lineCost(v) {
+  const k = factor();
   const n = state.pack ? CONFIG.serate : 1;
-  if (v.tipo === "unaTantum") return { full: v.prezzo, net: v.prezzo };
-  const full = v.prezzo * n;
-  return { full, net: state.pack ? full * (1 - CONFIG.scontoPacchetto) : full };
+  if (v.tipo === "unaTantum") { const x = r2(v.prezzo * k); return { full: x, net: x }; }
+  const full = r2(v.prezzo * k * n);
+  return { full, net: state.pack ? r2(full * (1 - CONFIG.scontoPacchetto)) : full };
 }
 
 function itemHTML(v) {
@@ -270,8 +302,8 @@ function itemHTML(v) {
   const unit = v.tipo === "unaTantum" ? "una tantum" : "a serata";
   const c = lineCost(v);
   const right = state.pack && v.tipo === "serata"
-    ? `${eur(c.net)}<small>${eur(v.prezzo)} ${unit} × ${CONFIG.serate}</small>`
-    : `${eur(v.prezzo)}<small>${unit}</small>`;
+    ? `${eur(c.net)}<small>${eur(r2(v.prezzo * factor()))} ${unit} × ${CONFIG.serate}</small>`
+    : `${eur(c.net)}<small>${unit}</small>`;
   const tag = v.req ? '<span class="tag req">richiesto</span>' : "";
   return `<label class="item ${state.on[v.id] ? "" : "off"}" for="v-${v.id}">
     <input type="checkbox" id="v-${v.id}" ${state.on[v.id] ? "checked" : ""} data-id="${v.id}">
@@ -294,22 +326,39 @@ function render() {
   const rows = active.map(v => `<div class="row"><span>${v.titolo}</span><span>${eur(lineCost(v).net)}</span></div>`);
   if (state.pack && full > net) rows.push(`<div class="row save"><span>Risparmio pacchetto</span><span>−${eur(full - net)}</span></div>`);
   $("#a-rows").innerHTML = rows.join("") || '<div class="row"><span>Nessuna voce selezionata</span></div>';
-  $("#a-head").textContent = state.pack ? `Pacchetto ${CONFIG.serate} serate` : "Serata singola";
-  $("#a-totlabel").textContent = "Totale lordo";
-  $("#a-total").textContent = eur(net);
-  $("#a-pernight").textContent = state.pack ? `circa ${eur(net / n)} a serata` : CONFIG.dataEvento;
-  window._sum = { active, net, n };
+  const F = CONFIG.fiscale;
+  let total, tax;
+  if (state.doc === "occ") {
+    const rit = r2(net * F.ritenuta);
+    tax = [["Compenso lordo", net], [`di cui ritenuta ${Math.round(F.ritenuta * 100)}% (F24 a carico di ${CONFIG.committente})`, rit]];
+    total = net;
+  } else {
+    const iva = r2(net * F.iva);
+    tax = [["Imponibile", net], [`IVA ${Math.round(F.iva * 100)}%`, iva]];
+    total = r2(net + iva);
+  }
+  $("#a-rows").innerHTML += `<div class="total" style="display:grid;gap:8px">` + tax.map(([k, x]) => `<div class="row"><span>${k}</span><span>${eur(x)}</span></div>`).join("") + `</div>`;
+  $("#a-head").textContent = (state.pack ? `Pacchetto ${CONFIG.serate} serate` : "Serata singola") + (state.doc === "occ" ? " · prestazione occasionale" : " · fattura");
+  $("#a-totlabel").textContent = state.doc === "occ" ? `Costo totale per ${CONFIG.committente}` : "Totale fattura, IVA inclusa";
+  $("#a-total").textContent = eur(total);
+  $("#a-pernight").textContent = state.pack ? `circa ${eur(total / n)} a serata` : CONFIG.dataEvento;
+  $("#fisc-note").textContent = state.doc === "occ"
+    ? `Prestazione d'opera occasionale, fuori campo IVA (art. 5 D.P.R. 633/1972). Gli importi sono lordi: ${CONFIG.committente}, come sostituto d'imposta, trattiene la ritenuta del ${Math.round(F.ritenuta * 100)}% e la versa con F24. Nessuna IVA da aggiungere.`
+    : `Fattura emessa da ${F.associazione}. Gli importi delle voci sono imponibili; l'IVA al ${Math.round(F.iva * 100)}% è già sommata nel totale indicato.`;
+  window._sum = { active, net, n, total, tax };
 }
 
 function summaryText() {
-  const { active, net, n } = window._sum;
+  const { active, n, total, tax } = window._sum;
   const lines = [
     `Proposta ${CONFIG.numero} — ${CONFIG.committente} @ ${CONFIG.luogo}`,
     state.pack ? `Formula: pacchetto ${n} serate` : `Formula: serata singola (${CONFIG.dataEvento})`,
+    state.doc === "occ" ? "Documento: prestazione occasionale" : `Documento: fattura ${CONFIG.fiscale.associazione}`,
     "",
     ...active.map(v => `• ${v.titolo}: ${eur(lineCost(v).net)}`),
     "",
-    `Totale lordo: ${eur(net)}` + (state.pack ? ` (circa ${eur(net / n)} a serata)` : "")
+    ...tax.map(([k, x]) => `${k}: ${eur(x)}`),
+    `TOTALE: ${eur(total)}` + (state.pack ? ` (circa ${eur(total / n)} a serata)` : "")
   ];
   return lines.join("\n");
 }
