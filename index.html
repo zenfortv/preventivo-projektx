@@ -288,7 +288,7 @@ function factor() {
 const r2 = (n) => Math.round(n * 100) / 100;
 
 function lineCost(v) {
-  const k = state.doc === "fat" ? factor() : 1; // occasionale: voci al netto; fattura: voci = imponibile (quota associazione inclusa, non mostrata)
+  const k = state.doc === "fat" ? factor() : 1;
   const n = state.pack ? CONFIG.serate : 1;
   if (v.tipo === "unaTantum") { const x = r2(v.prezzo * k); return { full: x, net: x }; }
   const full = r2(v.prezzo * k * n);
