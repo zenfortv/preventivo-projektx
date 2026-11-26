@@ -289,7 +289,7 @@ function factor() {
 const r2 = (n) => Math.round(n * 100) / 100;
 
 function lineCost(v) {
-  const k = factor();
+  const k = 1; // le voci restano al netto; tasse e costi si sommano nel riepilogo
   const n = state.pack ? CONFIG.serate : 1;
   if (v.tipo === "unaTantum") { const x = r2(v.prezzo * k); return { full: x, net: x }; }
   const full = r2(v.prezzo * k * n);
@@ -302,7 +302,7 @@ function itemHTML(v) {
   const unit = v.tipo === "unaTantum" ? "una tantum" : "a serata";
   const c = lineCost(v);
   const right = state.pack && v.tipo === "serata"
-    ? `${eur(c.net)}<small>${eur(r2(v.prezzo * factor()))} ${unit} × ${CONFIG.serate}</small>`
+    ? `${eur(c.net)}<small>${eur(v.prezzo)} ${unit} × ${CONFIG.serate}</small>`
     : `${eur(c.net)}<small>${unit}</small>`;
   const tag = v.req ? '<span class="tag req">richiesto</span>' : "";
   return `<label class="item ${state.on[v.id] ? "" : "off"}" for="v-${v.id}">
@@ -327,15 +327,20 @@ function render() {
   if (state.pack && full > net) rows.push(`<div class="row save"><span>Risparmio pacchetto</span><span>−${eur(full - net)}</span></div>`);
   $("#a-rows").innerHTML = rows.join("") || '<div class="row"><span>Nessuna voce selezionata</span></div>';
   const F = CONFIG.fiscale;
-  let total, tax;
+  let total;
+  const tax = [["Totale servizi (netto)", net]];
   if (state.doc === "occ") {
-    const rit = r2(net * F.ritenuta);
-    tax = [["Compenso lordo", net], [`di cui ritenuta ${Math.round(F.ritenuta * 100)}% (F24 a carico di ${CONFIG.committente})`, rit]];
-    total = net;
+    const lordo = r2(net / (1 - F.ritenuta));
+    tax.push([`+ ritenuta d'acconto ${Math.round(F.ritenuta * 100)}% (versata da ${CONFIG.committente} con F24)`, r2(lordo - net)]);
+    tax.push(["Compenso lordo", lordo]);
+    total = lordo;
   } else {
-    const iva = r2(net * F.iva);
-    tax = [["Imponibile", net], [`IVA ${Math.round(F.iva * 100)}%`, iva]];
-    total = r2(net + iva);
+    const imp = r2(net / (1 - F.quotaAssociazione));
+    const iva = r2(imp * F.iva);
+    tax.push([`+ gestione e fatturazione ${F.associazione}`, r2(imp - net)]);
+    tax.push(["Imponibile", imp]);
+    tax.push([`+ IVA ${Math.round(F.iva * 100)}%`, iva]);
+    total = r2(imp + iva);
   }
   $("#a-rows").innerHTML += `<div class="total" style="display:grid;gap:8px">` + tax.map(([k, x]) => `<div class="row"><span>${k}</span><span>${eur(x)}</span></div>`).join("") + `</div>`;
   $("#a-head").textContent = (state.pack ? `Pacchetto ${CONFIG.serate} serate` : "Serata singola") + (state.doc === "occ" ? " · prestazione occasionale" : " · fattura");
@@ -343,8 +348,8 @@ function render() {
   $("#a-total").textContent = eur(total);
   $("#a-pernight").textContent = state.pack ? `circa ${eur(total / n)} a serata` : CONFIG.dataEvento;
   $("#fisc-note").textContent = state.doc === "occ"
-    ? `Prestazione d'opera occasionale, fuori campo IVA (art. 5 D.P.R. 633/1972). Gli importi sono lordi: ${CONFIG.committente}, come sostituto d'imposta, trattiene la ritenuta del ${Math.round(F.ritenuta * 100)}% e la versa con F24. Nessuna IVA da aggiungere.`
-    : `Fattura emessa da ${F.associazione}. Gli importi delle voci sono imponibili; l'IVA al ${Math.round(F.iva * 100)}% è già sommata nel totale indicato.`;
+    ? `Prestazione d'opera occasionale, fuori campo IVA (art. 5 D.P.R. 633/1972). Le voci sono indicate al netto. Il compenso lordo comprende la ritenuta d'acconto del ${Math.round(F.ritenuta * 100)}%, che ${CONFIG.committente}, come sostituto d'imposta, trattiene e versa con F24. Nessuna IVA da aggiungere.`
+    : `Fattura emessa da ${F.associazione}. Le voci sono indicate al netto; nel totale sono sommati i costi di gestione dell'associazione e l'IVA al ${Math.round(F.iva * 100)}%.`;
   window._sum = { active, net, n, total, tax };
 }
 
