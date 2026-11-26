@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pixels Smoothies">
+<meta property="og:title" content="Preventivo ProjektX 2026-2027">
+<meta property="og:description" content="Proposta Pixels Smoothies per ProjektX: mapping su 3 facciate, ledwall pixel, visual ad hoc. Serata singola o pacchetto 5 serate.">
+<meta property="og:url" content="https://zenfortv.github.io/preventivo-projektx/">
+<meta property="og:image" content="https://zenfortv.github.io/preventivo-projektx/og-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Preventivo ProjektX 2026-2027">
+<meta name="twitter:description" content="Proposta Pixels Smoothies per ProjektX: mapping su 3 facciate, ledwall pixel, visual ad hoc. Serata singola o pacchetto 5 serate.">
+<meta name="twitter:image" content="https://zenfortv.github.io/preventivo-projektx/og-preview.png">
+<link rel="icon" type="image/png" href="logo-pixels-smoothies.png">
+<meta name="robots" content="noindex">
+<title>Preventivo ProjektX 2026-2027</title>
+<meta name="description" content="Proposta Pixels Smoothies per ProjektX: mapping su 3 facciate, ledwall pixel, visual ad hoc. Serata singola o pacchetto 5 serate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column "foglio di regia" — header, setup, scelta formula, voci a interruttore, totale fisso in basso su mobile / a lato su desktop */
+:root {
+  --bg: #f6f4f7;
+  --paper: #ffffff;
+  --ink: #16121a;
+  --muted: #6c6472;
+  --line: #e2dde6;
+  --accent: #b3205f;
+  --accent-soft: #f6e3ec;
+  --ok: #1f7a4d;
+  --display: "Silkscreen", "Courier New", monospace;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121015; --paper: #1b1820; --ink: #efeaf2; --muted: #a49cab; --line: #2e2934;
+  --accent: #f0699f; --accent-soft: #3a1d2b; --ok: #5fd49a; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #121015; --paper: #1b1820; --ink: #efeaf2; --muted: #a49cab; --line: #2e2934;
+  --accent: #f0699f; --accent-soft: #3a1d2b; --ok: #5fd49a; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 32px 120px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; align-items: flex-start; padding-bottom: 28px; border-bottom: 2px solid var(--ink); }
+.brand { display: grid; gap: 10px; }
+.logo { width: min(300px, 70vw); aspect-ratio: 567 / 156; background: var(--ink); -webkit-mask: url("logo-pixels-smoothies.png") left center / contain no-repeat; mask: url("logo-pixels-smoothies.png") left center / contain no-repeat; }
+.brand small { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+.meta { font-family: var(--mono); font-size: 12.5px; color: var(--muted); text-align: right; display: grid; gap: 2px; }
+.meta b { color: var(--ink); font-weight: 500; }
+
+.hero { padding-block: 36px 28px; display: grid; gap: 12px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 6vw, 56px); line-height: 1.02; margin: 0; text-wrap: balance; }
+.hero p { margin: 0; max-width: 62ch; color: var(--muted); font-size: 16px; }
+
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 32px; align-items: start; }
+@media (max-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+h2 { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+section { display: grid; gap: 4px; margin-bottom: 32px; }
+
+.setup { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 640px) { .setup { grid-template-columns: minmax(0, 1fr); } }
+.spec { background: var(--paper); border: 1px solid var(--line); padding: 16px; display: grid; gap: 6px; align-content: start; }
+.spec .k { font-family: var(--display); font-size: 15px; }
+.spec .v { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.px { display: grid; grid-template-columns: repeat(4, 20px); grid-auto-rows: 30px; gap: 2px; margin-top: 6px; }
+.px i { background: var(--accent); opacity: .85; }
+.walls { display: flex; gap: 4px; align-items: flex-end; height: 62px; margin-top: 6px; }
+.walls i { flex: 1; background: linear-gradient(180deg, var(--accent), transparent); opacity: .8; }
+.walls i:nth-child(1) { height: 70%; } .walls i:nth-child(2) { height: 100%; } .walls i:nth-child(3) { height: 70%; }
+
+.toggle { display: inline-grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--ink); background: var(--paper); max-width: 100%; }
+.toggle button { font: 500 14px var(--body); padding: 12px 18px; border: 0; background: transparent; color: var(--ink); cursor: pointer; text-align: left; display: grid; gap: 2px; }
+.toggle button span { font: 12px var(--mono); color: var(--muted); }
+.toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.toggle button[aria-pressed="true"] span { color: var(--bg); opacity: .75; }
+.toggle button:focus-visible, .item input:focus-visible + .sw { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.list { background: var(--paper); border: 1px solid var(--line); }
+.item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 16px; border-top: 1px solid var(--line); cursor: pointer; }
+.item:first-child { border-top: 0; }
+.item input { position: absolute; opacity: 0; pointer-events: none; }
+.sw { width: 38px; height: 22px; border: 2px solid var(--ink); position: relative; flex: none; }
+.sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background: var(--ink); transition: transform .15s; }
+.item input:checked + .sw { background: var(--accent); border-color: var(--accent); }
+.item input:checked + .sw::after { transform: translateX(16px); background: var(--paper); }
+.item .t { font-weight: 600; }
+.item .d { color: var(--muted); font-size: 13.5px; }
+.tag { display: inline-block; font: 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; border: 1px solid var(--line); color: var(--muted); }
+.tag.req { border-color: var(--accent); color: var(--accent); }
+.price { font-family: var(--mono); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.price small { display: block; color: var(--muted); font-size: 11.5px; }
+.item.off .t, .item.off .price { opacity: .45; }
+
+aside { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); background: var(--ink); color: var(--bg); padding: 22px; display: grid; gap: 14px; }
+aside h2 { color: var(--bg); opacity: .7; margin: 0; }
+.row { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.row.save { color: var(--ok); }
+:root:not([data-theme="light"]) aside .row.save { color: var(--ok); }
+.total { border-top: 1px dashed currentColor; padding-top: 14px; display: grid; gap: 4px; }
+.total .big { font-family: var(--display); font-size: 36px; line-height: 1; font-variant-numeric: tabular-nums; }
+.total .sub { font-family: var(--mono); font-size: 12px; opacity: .7; }
+aside button { font: 600 14px var(--body); padding: 12px; border: 2px solid var(--bg); background: transparent; color: var(--bg); cursor: pointer; }
+aside button:hover { background: var(--bg); color: var(--ink); }
+#copied { font: 12px var(--mono); opacity: .8; min-height: 1em; }
+#summary { width: 100%; min-height: 120px; font: 12px var(--mono); }
+
+.notes { font-size: 13.5px; color: var(--muted); display: grid; gap: 8px; max-width: 70ch; }
+.notes p { margin: 0; }
+footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); font: 12px var(--mono); color: var(--muted); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+@media (prefers-reduced-motion: reduce) { .sw::after { transition: none; } }
+</style>
+
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><div class="logo" role="img" aria-label="Pixels Smoothies"></div><small>Visual · Mapping · Laser · Luci</small></div>
+    <div class="meta">
+      <div>Proposta n. <b id="m-num"></b></div>
+      <div>Data <b id="m-date"></b></div>
+      <div>Valida fino al <b id="m-valid"></b></div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="eyebrow" id="h-eyebrow"></div>
+    <h1 id="h-title"></h1>
+    <p id="h-intro"></p>
+  </div>
+
+  <div class="grid">
+    <main>
+      <section>
+        <h2>Il setup richiesto</h2>
+        <div class="setup">
+          <div class="spec"><div class="k">Mapping 3 facciate</div><div class="v">3 videoproiettori · noleggio, montaggio, calibrazione</div><div class="walls"><i></i><i></i><i></i></div></div>
+          <div class="spec"><div class="k">Ledwall pixel</div><div class="v">8 pannelli 40×60 cm · 1,92 m² · autocostruito</div><div class="px"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="spec"><div class="k">Visual ad hoc</div><div class="v">Contenuti creati per la serata, adattati alle 3 facciate e al ledwall</div></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Formula</h2>
+        <div class="toggle" role="group" aria-label="Formula">
+          <button id="mode-single" aria-pressed="true">Serata singola<span id="lbl-single"></span></button>
+          <button id="mode-pack" aria-pressed="false">Pacchetto <span id="lbl-pack"></span></button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Voci incluse</h2>
+        <div class="list" id="list-core"></div>
+      </section>
+
+      <section>
+        <h2>Extra da aggiungere</h2>
+        <div class="list" id="list-extra"></div>
+      </section>
+
+      <section class="notes" id="notes"></section>
+    </main>
+
+    <aside aria-live="polite">
+      <h2 id="a-head">Riepilogo</h2>
+      <div id="a-rows" style="display:grid;gap:8px"></div>
+      <div class="total">
+        <div class="sub" id="a-totlabel">Totale</div>
+        <div class="big" id="a-total"></div>
+        <div class="sub" id="a-pernight"></div>
+      </div>
+      <button id="copy">Copia il riepilogo</button>
+      <div id="copied"></div>
+      <textarea id="summary" hidden readonly></textarea>
+    </aside>
+  </div>
+
+  <footer>
+    <span>Pixels Smoothies · Pier Maria Baraldo · Torino</span>
+    <span>pixelssmothies@gmail.com</span>
+  </footer>
+</div>
+
+<script>
+/* ===================== CONFIG — modifica qui per ogni nuova proposta ===================== */
+const CONFIG = {
+  titolo: "Preventivo ProjektX 2026-2027",
+  numero: "2026-11-PX01",
+  data: "2026-11-26",
+  validitaGiorni: 10,
+  committente: "ProjektX",
+  evento: "Live di musica elettronica",
+  luogo: "Notorius, Torino",
+  dataEvento: "28 novembre 2026",
+  intro: "Proposta per la parte visiva della serata: mapping su tre facciate, ledwall pixel e contenuti creati su misura. Lo stesso setup si può replicare su più date, aggiungendo laser e luci quando serve.",
+  serate: 5,               // serate nel pacchetto
+  scontoPacchetto: 0.15,   // sconto sulle voci "per serata" nel pacchetto
+  voci: [
+    // tipo: "serata" = si paga ogni serata · "unaTantum" = una volta sola
+    { id: "proiettori", gruppo: "core", req: true, titolo: "Noleggio 3 videoproiettori", desc: "Per il mapping sulle tre facciate, cavi e supporti inclusi.", tipo: "serata", prezzo: 270 },
+    { id: "mapping", gruppo: "core", req: true, titolo: "Montaggio, calibrazione e mapping", desc: "Installazione, allineamento e maschere sulle tre facciate, smontaggio a fine serata.", tipo: "serata", prezzo: 220 },
+    { id: "ledwall", gruppo: "core", req: true, titolo: "Ledwall pixel 8 pannelli", desc: "Montaggio, settaggio e messa in onda del ledwall autocostruito (8 × 40×60 cm).", tipo: "serata", prezzo: 160 },
+    { id: "regia", gruppo: "core", req: true, titolo: "Regia visual dal vivo", desc: "Operatore in regia per tutta la serata, visual a tempo con la musica.", tipo: "serata", prezzo: 220 },
+    { id: "contenuti", gruppo: "core", req: true, titolo: "Creazione contenuti visual ad hoc", desc: "Pacchetto di visual dedicato all'evento, con identità ProjektX, adattato a facciate e ledwall. Tempi di consegna stretti.", tipo: "unaTantum", prezzo: 350 },
+    { id: "trasporto", gruppo: "core", req: false, titolo: "Trasporto e logistica", desc: "Carico e scarico dell'attrezzatura, Torino.", tipo: "serata", prezzo: 50 },
+    { id: "laser", gruppo: "extra", titolo: "Laser show", desc: "Laser audio-reattivo con operatore dedicato, nel rispetto delle zone sicure.", tipo: "serata", prezzo: 280 },
+    { id: "luci", gruppo: "extra", titolo: "Light design e operatore luci", desc: "Programmazione delle luci sul setup del locale e operatore durante la serata.", tipo: "serata", prezzo: 200 },
+    { id: "refresh", gruppo: "extra", soloPacchetto: true, titolo: "Nuovi contenuti per ogni data", desc: "Visual aggiornati per ogni serata del pacchetto, così ogni data ha un look diverso.", tipo: "serata", prezzo: 120 }
+  ],
+  note: [
+    "Importi espressi come compenso lordo. Il documento fiscale (ricevuta o fattura) viene emesso a conferma.",
+    "Il locale fornisce corrente sui punti di proiezione, accesso per il montaggio dal pomeriggio e un punto regia con vista sulle facciate.",
+    "Nel pacchetto le date vanno fissate in anticipo; lo sconto si applica alle voci che si ripetono ogni serata.",
+    "Conferma richiesta entro la data di validità per garantire la disponibilità dell'attrezzatura."
+  ]
+};
+/* ======================================================================================== */
+
+const $ = (s) => document.querySelector(s);
+const eur = (n) => n.toLocaleString("it-IT", { style: "currency", currency: "EUR", minimumFractionDigits: 0, maximumFractionDigits: 2 });
+const fmtDate = (d) => d.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
+
+const state = { pack: false, on: {} };
+CONFIG.voci.forEach(v => state.on[v.id] = v.gruppo === "core");
+
+function init() {
+  const d = new Date(CONFIG.data + "T12:00:00");
+  const valid = new Date(d); valid.setDate(valid.getDate() + CONFIG.validitaGiorni);
+  $("#m-num").textContent = CONFIG.numero;
+  $("#m-date").textContent = fmtDate(d);
+  $("#m-valid").textContent = fmtDate(valid);
+  $("#h-eyebrow").textContent = `${CONFIG.evento} · ${CONFIG.luogo} · ${CONFIG.dataEvento}`;
+  $("#h-title").textContent = CONFIG.titolo;
+  $("#h-intro").textContent = CONFIG.intro;
+  $("#lbl-single").textContent = CONFIG.dataEvento;
+  $("#lbl-pack").textContent = `${CONFIG.serate} serate · −${Math.round(CONFIG.scontoPacchetto * 100)}%`;
+  $("#notes").innerHTML = "<h2>Condizioni</h2>" + CONFIG.note.map(n => `<p>${n}</p>`).join("");
+  $("#mode-single").onclick = () => setMode(false);
+  $("#mode-pack").onclick = () => setMode(true);
+  $("#copy").onclick = copy;
+  render();
+}
+
+function setMode(p) {
+  state.pack = p;
+  $("#mode-single").setAttribute("aria-pressed", String(!p));
+  $("#mode-pack").setAttribute("aria-pressed", String(p));
+  render();
+}
+
+function lineCost(v) {
+  const n = state.pack ? CONFIG.serate : 1;
+  if (v.tipo === "unaTantum") return { full: v.prezzo, net: v.prezzo };
+  const full = v.prezzo * n;
+  return { full, net: state.pack ? full * (1 - CONFIG.scontoPacchetto) : full };
+}
+
+function itemHTML(v) {
+  const hidden = v.soloPacchetto && !state.pack;
+  if (hidden) return "";
+  const unit = v.tipo === "unaTantum" ? "una tantum" : "a serata";
+  const c = lineCost(v);
+  const right = state.pack && v.tipo === "serata"
+    ? `${eur(c.net)}<small>${eur(v.prezzo)} ${unit} × ${CONFIG.serate}</small>`
+    : `${eur(v.prezzo)}<small>${unit}</small>`;
+  const tag = v.req ? '<span class="tag req">richiesto</span>' : "";
+  return `<label class="item ${state.on[v.id] ? "" : "off"}" for="v-${v.id}">
+    <input type="checkbox" id="v-${v.id}" ${state.on[v.id] ? "checked" : ""} data-id="${v.id}">
+    <span class="sw" aria-hidden="true"></span>
+    <span><span class="t">${v.titolo}</span>${tag}<br><span class="d">${v.desc}</span></span>
+    <span class="price">${right}</span>
+  </label>`;
+}
+
+function render() {
+  $("#list-core").innerHTML = CONFIG.voci.filter(v => v.gruppo === "core").map(itemHTML).join("");
+  $("#list-extra").innerHTML = CONFIG.voci.filter(v => v.gruppo === "extra").map(itemHTML).join("");
+  document.querySelectorAll(".item input").forEach(i => i.onchange = () => { state.on[i.dataset.id] = i.checked; render(); });
+
+  const active = CONFIG.voci.filter(v => state.on[v.id] && !(v.soloPacchetto && !state.pack));
+  let full = 0, net = 0;
+  active.forEach(v => { const c = lineCost(v); full += c.full; net += c.net; });
+  const n = state.pack ? CONFIG.serate : 1;
+
+  const rows = active.map(v => `<div class="row"><span>${v.titolo}</span><span>${eur(lineCost(v).net)}</span></div>`);
+  if (state.pack && full > net) rows.push(`<div class="row save"><span>Risparmio pacchetto</span><span>−${eur(full - net)}</span></div>`);
+  $("#a-rows").innerHTML = rows.join("") || '<div class="row"><span>Nessuna voce selezionata</span></div>';
+  $("#a-head").textContent = state.pack ? `Pacchetto ${CONFIG.serate} serate` : "Serata singola";
+  $("#a-totlabel").textContent = "Totale lordo";
+  $("#a-total").textContent = eur(net);
+  $("#a-pernight").textContent = state.pack ? `circa ${eur(net / n)} a serata` : CONFIG.dataEvento;
+  window._sum = { active, net, n };
+}
+
+function summaryText() {
+  const { active, net, n } = window._sum;
+  const lines = [
+    `Proposta ${CONFIG.numero} — ${CONFIG.committente} @ ${CONFIG.luogo}`,
+    state.pack ? `Formula: pacchetto ${n} serate` : `Formula: serata singola (${CONFIG.dataEvento})`,
+    "",
+    ...active.map(v => `• ${v.titolo}: ${eur(lineCost(v).net)}`),
+    "",
+    `Totale lordo: ${eur(net)}` + (state.pack ? ` (circa ${eur(net / n)} a serata)` : "")
+  ];
+  return lines.join("\n");
+}
+
+async function copy() {
+  const t = summaryText();
+  try { await navigator.clipboard.writeText(t); $("#copied").textContent = "Riepilogo copiato: incollalo in un messaggio a Pier Maria."; }
+  catch { const ta = $("#summary"); ta.hidden = false; ta.value = t; ta.select(); $("#copied").textContent = "Seleziona e copia il testo qui sotto."; }
+}
+
+init();
+</script>
+
+</body>
+</html>
