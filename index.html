@@ -228,7 +228,7 @@ const CONFIG = {
   fiscale: {
     ritenuta: 0.20,              // prestazione occasionale: lordo = netto / (1 - 0,20)
     iva: 0.22,                   // fattura: IVA sopra l'imponibile
-    quotaAssociazione: 0.20      // ricarico in fattura (provvisorio)
+    quotaAssociazione: 0          // ricarico in fattura (non usato)
   },
   note: [
     "Il locale fornisce corrente sui punti di proiezione, accesso per il montaggio dal pomeriggio e un punto regia con vista sulle facciate.",
@@ -288,7 +288,7 @@ function factor() {
 const r2 = (n) => Math.round(n * 100) / 100;
 
 function lineCost(v) {
-  const k = state.doc === "fat" ? factor() : 1;
+  const k = 1;
   const n = state.pack ? CONFIG.serate : 1;
   if (v.tipo === "unaTantum") { const x = r2(v.prezzo * k); return { full: x, net: x }; }
   const full = r2(v.prezzo * k * n);
@@ -301,7 +301,7 @@ function itemHTML(v) {
   const unit = v.tipo === "unaTantum" ? "una tantum" : "a serata";
   const c = lineCost(v);
   const right = state.pack && v.tipo === "serata"
-    ? `${eur(c.net)}<small>${eur(r2(v.prezzo * (state.doc === "fat" ? factor() : 1)))} ${unit} × ${CONFIG.serate}</small>`
+    ? `${eur(c.net)}<small>${eur(v.prezzo)} ${unit} × ${CONFIG.serate}</small>`
     : `${eur(c.net)}<small>${unit}</small>`;
   const tag = v.req ? '<span class="tag req">richiesto</span>' : "";
   return `<label class="item ${state.on[v.id] ? "" : "off"}" for="v-${v.id}">
