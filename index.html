@@ -329,10 +329,10 @@ function render() {
   let total;
   const tax = [];
   if (state.doc === "occ") {
-    tax.push(["Totale servizi (netto)", net]);
     const lordo = r2(net / (1 - F.ritenuta));
-    tax.push([`+ ritenuta d'acconto ${Math.round(F.ritenuta * 100)}% (versata da ${CONFIG.committente} con F24)`, r2(lordo - net)]);
     tax.push(["Compenso lordo", lordo]);
+    tax.push([`− ritenuta d'acconto ${Math.round(F.ritenuta * 100)}% sul lordo (versata da ${CONFIG.committente} con F24)`, r2(lordo - net)]);
+    tax.push(["= netto a Pixels Smoothies", net]);
     total = lordo;
   } else {
     const imp = net;
